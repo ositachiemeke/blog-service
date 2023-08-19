@@ -38,7 +38,6 @@ const updatePost = async (req: Request, res: Response, next: NextFunction) => {
     return res.status(200).json({ success: "true", message: "Update successful", data: response });
 
   } catch (err) {
-    console.log(err, "error")
     if (err instanceof Error) LOG.error(err.name);
     return res.status(500).json({ success: "false", message: "An error occurred while logging in" });
   }
@@ -54,7 +53,6 @@ const deletePost = async (req: Request, res: Response, next: NextFunction) => {
     return res.status(200).json({ success: "true", message: "Post deleted successful", data: response });
 
   } catch (err) {
-    console.log(err, "error")
     if (err instanceof Error) LOG.error(err.name);
     return res.status(500).json({ success: "false", message: "An error occurred while logging in" });
   }
@@ -70,7 +68,6 @@ const getPosts = async (req: Request, res: Response, next: NextFunction) => {
     return res.status(200).json({ success: "true", message: "Retrieved  successful", data: response });
 
   } catch (err) {
-    console.log(err, "error")
     if (err instanceof Error) LOG.error(err.name);
     return res.status(500).json({ success: "false", message: "An error occurred." });
   }
@@ -86,7 +83,6 @@ const getSinglePost = async (req: Request, res: Response, next: NextFunction) =>
     return res.status(200).json({ success: "true", message: "Retrieved  successful", data: response });
 
   } catch (err) {
-    console.log(err, "error")
     if (err instanceof Error) LOG.error(err.name);
     return res.status(500).json({ success: "false", message: "An error occurred." });
   }

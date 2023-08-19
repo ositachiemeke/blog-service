@@ -26,7 +26,7 @@ export default class UserRepositories {
     static async create({ username, email, password, name }: CreateUserPayloadInterface) {
         const query = `
                         INSERT INTO users (username, email, password,name,created_at, updated_at)
-                        VALUES (?, ?, ?)
+                        VALUES (?, ?, ?,?,?,?)
                     `;
 
         await sequelize.query(query, {
@@ -38,10 +38,10 @@ export default class UserRepositories {
             FROM users
             WHERE id = LAST_INSERT_ID()
             `;
-        const [user] = await sequelize.query(selectQuery, {
+        const user:Array<UserModel> = await sequelize.query(selectQuery, {
             type: QueryTypes.SELECT,
         });
-        return [user];
+        return user[0];
     }
 
     static async update({ password, name }: UpdateUserPayloadInterface, userId: string) {

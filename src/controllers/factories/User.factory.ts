@@ -13,9 +13,8 @@ export default class UserFactory {
     static async createUser(body: CreateUserPayloadInterface) {
         try {
             body.password = await bcrypt.hash(body.password, 8);
-            return await DB.users.create(body);
+            return await UserRepositories.create(body);
         } catch (err) {
-            console.log(err, "error")
             if (err instanceof Error) LOG.error(err.name);
             throw Error("Problem inserting user, was everything unique that needed to be");
         }

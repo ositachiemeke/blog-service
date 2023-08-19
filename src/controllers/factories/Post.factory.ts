@@ -17,7 +17,6 @@ export default class PostFactory {
 
             return await PostRepositories.create(body);
         } catch (err) {
-            console.log(err, "error")
             if (err instanceof Error) LOG.error(err.name);
             throw Error("Problem creating post, was everything unique that needed to be");
         }

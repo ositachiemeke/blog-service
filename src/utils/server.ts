@@ -51,7 +51,6 @@ const createServer = () => {
   /** Health check */
   app.use("/health", healthCheck);
 
-  console.log(swaggerSpecs, 'swagger specs');
   app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
 
 
