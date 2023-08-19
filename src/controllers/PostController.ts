@@ -16,7 +16,7 @@ const createPost = async (req: Request, res: Response, next: NextFunction) => {
     const response = await PostFactory.create(body);
     return res.status(201).json({
       success: true, message: "Post created successfully", data: {
-        id: response.id
+        response
       }
     });
   } catch (err) {
