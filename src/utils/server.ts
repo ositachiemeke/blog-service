@@ -3,7 +3,10 @@ import LOG from "./../library/Logging";
 
 // routes
 import userRoutes from "./../routes/Users";
+import postRoutes from "./../routes/Posts";
 import healthCheck from "./../routes/Health";
+import swaggerUi from 'swagger-ui-express';
+import swaggerSpecs from "swagger";
 
 const createServer = () => {
   const app = express();
@@ -39,11 +42,18 @@ const createServer = () => {
     next();
   });
 
+
   /** Routes */
   app.use("/v1/users", userRoutes);
+  app.use("/v1/posts", postRoutes);
+
 
   /** Health check */
   app.use("/health", healthCheck);
+
+  console.log(swaggerSpecs, 'swagger specs');
+  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
+
 
   /** Error handling */
   app.use((req, res, next) => {
