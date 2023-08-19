@@ -24,7 +24,6 @@ export const auth = () => {
             }
             next();
         } catch (e) {
-            console.log(e, "error")
             res.status(401).send({ type: "error", status: 401, message: "unauthorized" });
         }
     }
