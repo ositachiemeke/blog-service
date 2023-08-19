@@ -4,8 +4,14 @@ import { CreateUserPayloadInterface, UpdateUserPayloadInterface, UserAuthInterfa
 import bcrypt from "bcryptjs";
 
 export default class UserRepositories {
+    sequelize: any;
+    
 
-    static async findOneColName(colName: string, colValue: string) {
+    constructor(sequelize: any){
+        this.sequelize= sequelize;
+    }
+
+    async findOneColName(colName: string, colValue: string) {
         const query = `
                 SELECT *
                 FROM users
@@ -13,7 +19,7 @@ export default class UserRepositories {
                 LIMIT 1
                 `;
 
-        const queryResponse: Array<UserModel> = await sequelize.query(query, {
+        const queryResponse: Array<UserModel> = await this.sequelize.query(query, {
             replacements: [colValue],
             type: QueryTypes.SELECT,
         });
@@ -23,13 +29,13 @@ export default class UserRepositories {
         return queryResponse[0];
     }
 
-    static async create({ username, email, password, name }: CreateUserPayloadInterface) {
+     async create({ username, email, password, name }: CreateUserPayloadInterface) {
         const query = `
                         INSERT INTO users (username, email, password,name,created_at, updated_at)
                         VALUES (?, ?, ?,?,?,?)
                     `;
 
-        await sequelize.query(query, {
+        await this.sequelize.query(query, {
             replacements: [username, email, password, name, (new Date(Date.now())).toISOString().slice(0, 19).replace('T', ' '), (new Date(Date.now())).toISOString().slice(0, 19).replace('T', ' ')],
             type: QueryTypes.INSERT,
         });
@@ -38,15 +44,15 @@ export default class UserRepositories {
             FROM users
             WHERE id = LAST_INSERT_ID()
             `;
-        const user:Array<UserModel> = await sequelize.query(selectQuery, {
+        const user:Array<UserModel> = await this.sequelize.query(selectQuery, {
             type: QueryTypes.SELECT,
         });
         return user[0];
     }
 
-    static async update({ password, name }: UpdateUserPayloadInterface, userId: string) {
+     async update({ password, name }: UpdateUserPayloadInterface, userId: string) {
         // Update the user's name and password
-        await sequelize.query(
+        await this.sequelize.query(
             `
   UPDATE users
   SET name = :name, password = :hashedPassword, updated_at= :updated_at
@@ -64,7 +70,7 @@ export default class UserRepositories {
         );
 
         // Fetch the updated user data
-        const updatedUser: Array<UserAuthInterface> = await sequelize.query(
+        const updatedUser: Array<UserAuthInterface> = await this.sequelize.query(
             'SELECT * FROM users WHERE id = :userId',
             {
                 replacements: { userId },
@@ -81,8 +87,8 @@ export default class UserRepositories {
 
     }
 
-    static async delete(userId: string) {
-        await sequelize.query(
+     async delete(userId: string) {
+        await this.sequelize.query(
             'DELETE FROM users WHERE id = :userId',
             {
                 replacements: { userId },

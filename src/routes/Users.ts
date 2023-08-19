@@ -291,8 +291,4 @@ router.put(
 router.delete('/delete', auth(), controller.deleteUser);
 
 
-router.get("/:userId", auth(), controller.getUserBasedOnId);
-
-router.get("/", auth, controller.getAllUsers);
-
 export = router;

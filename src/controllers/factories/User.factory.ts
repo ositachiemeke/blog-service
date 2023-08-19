@@ -9,33 +9,38 @@ import { sequelize } from "src/database/sequelize-db";
 import UserRepositories from "../repositories/User.repository";
 
 export default class UserFactory {
+    userRepositories: UserRepositories;
 
-    static async createUser(body: CreateUserPayloadInterface) {
+   constructor(){
+     this.userRepositories = new UserRepositories(sequelize);
+   }
+
+     async createUser(body: CreateUserPayloadInterface) {
         try {
             body.password = await bcrypt.hash(body.password, 8);
-            return await UserRepositories.create(body);
+            return await this.userRepositories.create(body);
         } catch (err) {
             if (err instanceof Error) LOG.error(err.name);
             throw Error("Problem inserting user, was everything unique that needed to be");
         }
     }
 
-    static async isEmailUnique(email: string) {
-        const response = await UserRepositories.findOneColName("email", email);
+     async isEmailUnique(email: string) {
+        const response = await this.userRepositories.findOneColName("email", email);
         return response;
     }
 
-    static async isUsernameUnique(username: string) {
-        const response = await UserRepositories.findOneColName("username", username);
+    async isUsernameUnique(username: string) {
+        const response = await this.userRepositories.findOneColName("username", username);
         return response;
     }
 
-    static async login({ email, username, password }: UserLoginPayloadInterface) {
+    async login({ email, username, password }: UserLoginPayloadInterface) {
 
         let colname = email && "email" || "username";
         let colValue = email || username;
 
-        const user = await UserRepositories.findOneColName(colname, colValue || "")
+        const user = await this.userRepositories.findOneColName(colname, colValue || "")
         if (!user) {
             return false;
         }
@@ -57,9 +62,9 @@ export default class UserFactory {
         return { user: filterUserObj, token }
     }
 
-    static async updateUser(payload: UpdateUserPayloadInterface, userId: string) {
+     async updateUser(payload: UpdateUserPayloadInterface, userId: string) {
         try {
-            return UserRepositories.update(payload, userId)
+            return this.userRepositories.update(payload, userId)
         } catch (err) {
             if (err instanceof Error) LOG.error(err.name);
             throw Error("Problem inserting user, was everything unique that needed to be");
@@ -67,9 +72,9 @@ export default class UserFactory {
 
     }
 
-    static async deleteUser( userId: string) {
+     async deleteUser( userId: string) {
         try {
-            return UserRepositories.delete( userId)
+            return this.userRepositories.delete( userId)
         } catch (err) {
             if (err instanceof Error) LOG.error(err.name);
             throw Error("Problem inserting user, was everything unique that needed to be");

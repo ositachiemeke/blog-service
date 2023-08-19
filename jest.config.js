@@ -8,7 +8,6 @@ module.exports = {
   clearMocks: true,
   resetMocks: true,
   restoreMocks: true,
-  setupFiles: ["<rootDir>/.jest/setEnvVars.js"],
   coverageThreshold: {
     global: {
       branches: 71.42,

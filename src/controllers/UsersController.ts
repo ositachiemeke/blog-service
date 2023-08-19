@@ -8,10 +8,12 @@ interface User {
   email: string;
 }
 
+const  userFactory = new UserFactory();
+
 const createUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const body = req.body;
-    const response = await UserFactory.createUser(body);
+    const response = await userFactory.createUser(body);
     return res.status(201).json({
       success: true, message: "User created successfully", data: {
         id: response.id
@@ -26,7 +28,7 @@ const createUser = async (req: Request, res: Response, next: NextFunction) => {
 
 const loginUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const response = await UserFactory.login(req.body);
+    const response = await userFactory.login(req.body);
     if (!response) {
       return res.status(401).json({ success: "false", message: "Invalid username/email and password" });
     }
@@ -41,7 +43,7 @@ const loginUser = async (req: Request, res: Response, next: NextFunction) => {
 
 const updateUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const response = await UserFactory.updateUser(req.body, req.user.id);
+    const response = await userFactory.updateUser(req.body, req.user.id);
     if (!response) {
       return res.status(404).json({ success: "false", message: "user not found" });
     }
@@ -56,7 +58,7 @@ const updateUser = async (req: Request, res: Response, next: NextFunction) => {
 
 const deleteUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const response = await UserFactory.deleteUser(req.user.id);
+    const response = await userFactory.deleteUser(req.user.id);
     if (!response) {
       return res.status(404).json({ success: "false", message: "user not found" });
     }
@@ -73,41 +75,5 @@ const deleteUser = async (req: Request, res: Response, next: NextFunction) => {
 
 
 
-const getUserBasedOnId = async (req: Request, res: Response, next: NextFunction) => {
-  // const userId = req.params.userId;
 
-  // try {
-  //   const result = await DB.users.findByPk(userId);
-
-  //   if (result) {
-  //     return res.status(200).json({ user: result });
-  //   } else {
-  //     return res.status(404).json({ message: "user not found" });
-  //   }
-  // } catch (err) {
-  //   return res.status(500).json({});
-  // }
-};
-
-const getAllUsers = async (req: Request, res: Response, next: NextFunction) => {
-  // let queryObj = {};
-  // if (req.query.limit) {
-  //   let limit: number = parseInt(req.query.limit.toString());
-  //   Object.assign(queryObj, { limit: limit });
-  // }
-
-  // if (req.query.offset) {
-  //   let offset: number = parseInt(req.query.offset.toString());
-  //   Object.assign(queryObj, { offset: offset });
-  // }
-
-  // try {
-  //   const result = await DB.users.findAndCountAll(queryObj);
-
-  //   return res.status(200).json(result);
-  // } catch (err) {
-  //   return res.status(500).json({ message: "DB error performing query to get users" });
-  // }
-};
-
-export default { createUser, getUserBasedOnId, getAllUsers, loginUser, updateUser, deleteUser };
+export default { createUser,  loginUser, updateUser, deleteUser };
