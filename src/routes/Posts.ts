@@ -46,8 +46,23 @@ const router = express.Router();
  *                 data:
  *                   type: object
  *                   properties:
- *                     id:
- *                       type: integer
+ *                     response:
+ *                       type: object
+ *                       properties:
+ *                         id:
+ *                           type: integer
+ *                         title:
+ *                           type: string
+ *                         content:
+ *                           type: string
+ *                         user_id:
+ *                           type: integer
+ *                         created_at:
+ *                           type: string
+ *                           format: date-time
+ *                         updated_at:
+ *                           type: string
+ *                           format: date-time
  *       400:
  *         description: Bad request
  *         content:
