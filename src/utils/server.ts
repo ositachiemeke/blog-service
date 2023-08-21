@@ -6,10 +6,21 @@ import userRoutes from "./../routes/Users";
 import postRoutes from "./../routes/Posts";
 import healthCheck from "./../routes/Health";
 import swaggerUi from 'swagger-ui-express';
-import swaggerSpecs from "swagger";
+import swaggerSpecs from "../../swagger";
+import { sequelize } from "../database/sequelize-db";
 
+const ConnectToDB = async () => {
+  try {
+    await sequelize.authenticate();
+    await sequelize.sync();
+    LOG.info("Connection to the database has been established successfully.");
+  } catch (error) {
+    LOG.error("Unable to connect to the database:" + error);
+  }
+};
 const createServer = () => {
   const app = express();
+  ConnectToDB();
 
   /** Log the request */
   app.use((req, res, next) => {

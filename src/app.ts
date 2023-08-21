@@ -32,4 +32,10 @@ const StartServer = () => {
 StartServer();
 
 /** Establish connection to the database */
-ConnectToDB();
+
+const startApp = () =>{
+  ConnectToDB();
+
+}
+
+export default startApp

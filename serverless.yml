@@ -1,0 +1,13 @@
+service: my-express-app
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  stage: dev
+
+functions:
+  app:
+    handler: dist/index.handler
+    events:
+      - httpApi: '*'

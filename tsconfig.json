@@ -10,13 +10,13 @@
     "strict": true,
     
     "skipLibCheck": true,
-    "types": ["./src/types","jest"], 
+    "types": ["jest"], 
     
 
   },
   "ts-node":{
           "files": true
     },
-  "include": ["src/**/*.ts", "src/database/migrations/20230404192016-create-user-table.js", "src/database/migrations/20230404192018-create-comment-table.js", "src/database/migrations/20230404192017-create-post.js"],
-  "exclude": ["node_modules", "dist", "tests/**/*.ts", "coverage"]
+  "include": ["src/**/*.ts", "index.ts","src/database/migrations/20230404192016-create-user-table.js", "src/database/migrations/20230404192018-create-comment-table.js", "src/database/migrations/20230404192017-create-post.js"],
+  "exclude": ["dist", "tests/**/*.ts", "coverage"]
 }

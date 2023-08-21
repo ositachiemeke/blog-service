@@ -1,8 +1,8 @@
 import { QueryTypes } from "sequelize";
-import { sequelize } from "src/database/sequelize-db";
-import { CreateUserPayloadInterface, UpdateUserPayloadInterface, UserAuthInterface, UserModel } from "src/types/User";
+import { sequelize } from "../../../src/database/sequelize-db";
+import { CreateUserPayloadInterface, UpdateUserPayloadInterface, UserAuthInterface, UserModel } from "../../../src/types/User";
 import bcrypt from "bcryptjs";
-import { PostModelInterface, UpdatePostPayloadInterface, createPostInterface } from "src/types/Post";
+import { PostModelInterface, UpdatePostPayloadInterface, createPostInterface } from "../../../src/types/Post";
 
 export default class PostRepositories {
 

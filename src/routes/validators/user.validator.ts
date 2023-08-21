@@ -1,5 +1,5 @@
 import { body } from 'express-validator';
-import UserFactoryClass from 'src/controllers/factories/User.factory';
+import UserFactoryClass from '../../../src/controllers/factories/User.factory';
 const UserFactory = new UserFactoryClass();
 const loginValidators = [
     body('email')

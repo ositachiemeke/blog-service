@@ -1,11 +1,8 @@
-import { CreateUserPayloadInterface, UpdateUserPayloadInterface, UserLoginPayloadInterface, UserModel } from "src/types/User";
+import { CreateUserPayloadInterface, UpdateUserPayloadInterface, UserLoginPayloadInterface, UserModel } from "../../../src/types/User";
 import bcrypt from "bcryptjs";
 import LOG from "./../../library/Logging";
-import DB from "./../../models/index";
-import { v4 as uuidv4 } from "uuid";
 import { Jwt, sign } from "jsonwebtoken";
-import { QueryTypes } from 'sequelize';
-import { sequelize } from "src/database/sequelize-db";
+import { sequelize } from "../../../src/database/sequelize-db";
 import UserRepositories from "../repositories/User.repository";
 
 export default class UserFactory {
