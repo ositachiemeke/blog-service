@@ -1,6 +1,5 @@
 import { QueryTypes } from "sequelize";
-import { sequelize } from "src/database/sequelize-db";
-import { CreateUserPayloadInterface, UpdateUserPayloadInterface, UserAuthInterface, UserModel } from "src/types/User";
+import { CreateUserPayloadInterface, UpdateUserPayloadInterface, UserAuthInterface, UserModel } from "../../../src/types/User";
 import bcrypt from "bcryptjs";
 
 export default class UserRepositories {

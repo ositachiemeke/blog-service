@@ -1,9 +1,9 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
-import UserFactory from "src/controllers/factories/User.factory";
-import UserRepositories from "src/controllers/repositories/User.repository";
-import { sequelize } from "src/database/sequelize-db";
-import { UserAuthInterface } from "src/types/User";
+import UserFactory from "../../../src/controllers/factories/User.factory";
+import UserRepositories from "../../../src/controllers/repositories/User.repository";
+import { sequelize } from "../../../src/database/sequelize-db";
+import { UserAuthInterface } from "../../../src/types/User";
 
 
 

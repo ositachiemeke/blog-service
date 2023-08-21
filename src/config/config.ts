@@ -1,7 +1,6 @@
 import dotenv from "dotenv-safe";
 import { ProjectConfiguration } from "../types/ProjectConfiguration";
 
-dotenv.config();
 
 const DB_HOST = process.env.DB_HOST || "";
 const DB_USERNAME = process.env.DB_USERNAME || "";

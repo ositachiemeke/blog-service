@@ -1,13 +1,13 @@
-import { CreateUserPayloadInterface, UpdateUserPayloadInterface, UserLoginPayloadInterface, UserModel } from "src/types/User";
+import { CreateUserPayloadInterface, UpdateUserPayloadInterface, UserLoginPayloadInterface, UserModel } from "../../../src/types/User";
 import bcrypt from "bcryptjs";
 import LOG from "../../library/Logging";
 import DB from "../../models/index";
 import { v4 as uuidv4 } from "uuid";
 import { Jwt, sign } from "jsonwebtoken";
 import { QueryTypes } from 'sequelize';
-import { sequelize } from "src/database/sequelize-db";
+import { sequelize } from "../../../src/database/sequelize-db";
 import UserRepositories from "../repositories/User.repository";
-import { UpdatePostPayloadInterface, createPostInterface } from "src/types/Post";
+import { UpdatePostPayloadInterface, createPostInterface } from "../../../src/types/Post";
 import PostRepositories from "../repositories/Post.repository";
 
 export default class PostFactory {
