@@ -3,26 +3,11 @@ import { sequelize } from "../../../src/database/sequelize-db";
 import { CreateUserPayloadInterface, UpdateUserPayloadInterface, UserAuthInterface, UserModel } from "../../../src/types/User";
 import bcrypt from "bcryptjs";
 import { PostModelInterface, UpdatePostPayloadInterface, createPostInterface } from "../../../src/types/Post";
+import SQL from "../../utils/db";
+import { RowDataPacket } from "mysql2";
 
 export default class PostRepositories {
 
-    static async findOneColName(colName: string, colValue: string) {
-        const query = `
-                SELECT *
-                FROM users
-                WHERE ${colName} = ?
-                LIMIT 1
-                `;
-
-        const queryResponse: Array<UserModel> = await sequelize.query(query, {
-            replacements: [colValue],
-            type: QueryTypes.SELECT,
-        });
-        if (!queryResponse.length) {
-            return false;
-        }
-        return queryResponse[0];
-    }
 
     static async create({ title, content, user_id }: createPostInterface) {
         const query = `
@@ -30,19 +15,14 @@ export default class PostRepositories {
                         VALUES (?, ?, ?,?,?)
                     `;
 
-        await sequelize.query(query, {
-            replacements: [title, content, user_id, (new Date(Date.now())).toISOString().slice(0, 19).replace('T', ' '), (new Date(Date.now())).toISOString().slice(0, 19).replace('T', ' ')],
-            type: QueryTypes.INSERT,
-        });
+        await SQL.execute(query, [title, content, user_id, (new Date(Date.now())).toISOString().slice(0, 19).replace('T', ' '), (new Date(Date.now())).toISOString().slice(0, 19).replace('T', ' ')]);
         const selectQuery = `
             SELECT *
             FROM posts
             WHERE id = LAST_INSERT_ID()
             `;
-        const post = await sequelize.query(selectQuery, {
-            type: QueryTypes.SELECT,
-        });
-        return post[0] as PostModelInterface;
+        const post = await SQL.query(selectQuery);
+        return post[0][0] as PostModelInterface;
     }
 
     static async update(payload: UpdatePostPayloadInterface, userId: string) {
@@ -53,35 +33,23 @@ export default class PostRepositories {
         const query = `UPDATE posts SET ${setValues} WHERE user_id=${userId} AND id=${payload.post_id}`;
 
         // Update the user's name and password
-        await sequelize.query(
-            query,
-            {
-
-                type: QueryTypes.UPDATE,
-            }
+        await SQL.query(
+            query
         );
 
         // Fetch the updated user data
-        const updatedPosted: Array<PostModelInterface> = await sequelize.query(
-            'SELECT * FROM posts WHERE id = :post_id AND user_id =:userId',
-            {
-                replacements: { userId, post_id: payload.post_id },
-                type: QueryTypes.SELECT,
-            }
+        const updatedPosted: Array<RowDataPacket> = await SQL.execute(
+            'SELECT * FROM posts WHERE id = ? AND user_id = ?', [payload.post_id, userId]
         );
 
 
-        return updatedPosted[0];
+        return updatedPosted[0][0];
 
     }
 
     static async delete(userId: string, postId: number) {
-        const response = await sequelize.query(
-            'DELETE FROM posts WHERE id = :postId AND user_id = :userId',
-            {
-                replacements: { userId, postId },
-                type: QueryTypes.DELETE,
-            }
+        const response = await SQL.execute(
+            'DELETE FROM posts WHERE id = ? AND user_id = ?',[postId, userId]
         );
         return true;
     }
@@ -99,12 +67,11 @@ export default class PostRepositories {
     users AS u ON p.user_id = u.id
 `;
 
-        return await sequelize.query(
+        const response: RowDataPacket[] =  await SQL.query(
             query,
-            {
-                type: QueryTypes.SELECT,
-            }
+            
         );
+        return response[0];
     }
     static async getPostById(id: number) {
         const query = `
@@ -117,17 +84,13 @@ export default class PostRepositories {
     posts AS p
   LEFT JOIN
     users AS u ON p.user_id = u.id
-  WHERE p.id = :id
+  WHERE p.id = ?
 `;
 
-        const response = await sequelize.query(
+        const response: RowDataPacket[] = await SQL.execute(
             query,
-            {
-                type: QueryTypes.SELECT,
-                replacements: { id },
-
-            }
+           [id]
         );
-        return response[0];
+        return response[0][0];
     }
 }
